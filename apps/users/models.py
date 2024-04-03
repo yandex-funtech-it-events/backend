@@ -1,18 +1,20 @@
+from core.constants import FieldLenght
+from core.models import TimeStamp
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from core.models import TimeStamp
-from core.constants import FieldLenght
 
 
-class MyUser(AbstractUser, TimeStamp):
+class CustomUser(AbstractUser, TimeStamp):
     """
     Кастомная модель переопределенного юзера.
     При создании пользователя все поля обязательны для заполнения.
     """
+
     class RoleChoises(models.TextChoices):
         """
         Определение роли юзера.
         """
+
         ATTENDEE = "attendee"
         ORGANIZER = "organizer"
         ADMIN = "admin"
