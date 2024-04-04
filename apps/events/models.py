@@ -1,7 +1,8 @@
-from core.constants import EventFieldLength
-from core.models import TimeStamp
 from django.contrib.auth.models import User
 from django.db import models
+
+from apps.core.constants import EventFieldLength
+from apps.core.models import TimeStamp
 
 
 class FormatChoices(models.TextChoices):
@@ -75,9 +76,7 @@ class Events(TimeStamp):
         verbose_name="модератор",
         related_name="events_moderated",
     )
-    tags = models.ManyToManyField(
-        EventTags, verbose_name="тег", verbose_name_plural="теги"
-    )
+    tags = models.ManyToManyField(EventTags, verbose_name="тег")
 
     class Meta:
         verbose_name = "мероприятие"
