@@ -1,5 +1,5 @@
-from core.constants import FieldLength
-from core.models import TimeStamp
+from apps.core.constants import FieldLength
+from apps.core.models import TimeStamp
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
