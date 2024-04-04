@@ -38,6 +38,7 @@ THIRD_PARTY_APPS = [
     "apps.events",
     "apps.notifications",
     "apps.reviews",
+    "apps.core",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
