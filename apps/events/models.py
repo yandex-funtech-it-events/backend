@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from apps.core.constants import EventFieldLength
-from apps.core.models import TimeStamp
+from apps.core.models import EventTimeStamp
 
 
 class FormatChoices(models.TextChoices):
@@ -30,7 +30,7 @@ class EventTags(models.Model):
         return self.name
 
 
-class Events(TimeStamp):
+class Events(EventTimeStamp):
     """Модель мероприятий"""
 
     title = models.CharField(
