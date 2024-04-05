@@ -15,10 +15,10 @@ class Report(models.Model):
         max_length=ReportFieldLength.MAX_LENGTH_DESCRIPTION.value,
         unique=True
     )
-    date_start = models.DateField(
+    date_start = models.DateTimeField(
         "дата начала доклада", blank=True, null=True
     )
-    date_end = models.DateField(
+    date_end = models.DateTimeField(
         "дата окончания доклада", blank=True, null=True
     )
     speaker = models.CharField(
@@ -38,3 +38,11 @@ class Report(models.Model):
         verbose_name="доклад",
         related_name="reported_at_event"
     )
+
+    class Meta:
+        verbose_name = 'Доклад'
+        verbose_name_plural = "Доклады"
+        ordering = ["-date_start"]
+
+    def __str__(self):
+        return str(self.title[:50])
