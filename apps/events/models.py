@@ -16,10 +16,10 @@ class Report(models.Model):
         unique=True
     )
     date_start = models.DateField(
-        "дата начала доклада", blank=True, null=True, db_index=True
+        "дата начала доклада", blank=True, null=True
     )
     date_end = models.DateField(
-        "дата окончания доклада", blank=True, null=True, db_index=True
+        "дата окончания доклада", blank=True, null=True
     )
     speaker = models.CharField(
         "Фамилиия и имя спикера",
@@ -27,7 +27,7 @@ class Report(models.Model):
     )
     speaker_title = models.CharField(
         "Должность спикера",
-        max_length=ReportFieldLength.MAX_LENGTH_SPEAKER.value,
+        max_length=ReportFieldLength.MAX_LENGTH_SPEAKER_TITLE.value,
     )
     speaker_photo = models.ImageField(
         "Фотография спикера", blank=True, upload_to="speakers_pictures/"
