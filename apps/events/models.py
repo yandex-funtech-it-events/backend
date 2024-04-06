@@ -16,10 +16,10 @@ class Report(models.Model):
         unique=True
     )
     date_start = models.DateTimeField(
-        "дата начала доклада", blank=True, null=True
+        "дата начала доклада", default=None, db_index=True
     )
     date_end = models.DateTimeField(
-        "дата окончания доклада", blank=True, null=True
+        "дата окончания доклада", default=None, db_index=True
     )
     speaker = models.CharField(
         "Фамилиия и имя спикера",
@@ -33,7 +33,7 @@ class Report(models.Model):
         "Фотография спикера", blank=True, upload_to="speakers_pictures/"
     )
     event = models.ForeignKey(
-        Event,
+        Events,
         on_delete=models.CASCADE,
         verbose_name="доклад",
         related_name="reported_at_event"
