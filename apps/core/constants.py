@@ -15,3 +15,12 @@ class FieldLength(IntEnum):
     MAX_LENGTH_PASSWORD = 150
     # Максимальная длина поля role User.role
     MAX_LENGTH_ROLE = 150
+
+
+# Максимальнная длина поля
+# Registration.registration_stage
+MAX_LENGTH_REGISTRATION_STAGE = 20
+
+
+# Максимальная длина поля Notification.text
+MAX_LENGTH_NOTIFICATION_TEXT = 200
