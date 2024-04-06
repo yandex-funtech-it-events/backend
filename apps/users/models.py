@@ -3,14 +3,7 @@ from django.db import models
 
 from apps.core.constants import FieldLength
 from apps.core.models import TimeStamp
-
-
-class RoleChoices(models.TextChoices):
-    """Определение роли юзера."""
-
-    ATTENDEE = ("attendee", "Участник")
-    ORGANIZER = ("organizer", "Организатор")
-    MODERATOR = ("moderator", "Модератор")
+from apps.users import choice_classes
 
 
 class CustomUser(AbstractUser, TimeStamp):
@@ -39,12 +32,13 @@ class CustomUser(AbstractUser, TimeStamp):
     )
     phone = models.CharField(
         "Номер телефона пользователя",
+        unique=True,
         max_length=FieldLength.MAX_LENGTH_PHONE.value,
     )
-    role = models.TextField(
+    role = models.CharField(
         "Пользовательская роль",
-        choices=RoleChoices.choices,
-        default=RoleChoices.ATTENDEE,
+        choices=choice_classes.RoleChoices.choices,
+        default=choice_classes.RoleChoices.ATTENDEE,
         max_length=FieldLength.MAX_LENGTH_ROLE.value,
     )
 
@@ -55,16 +49,6 @@ class CustomUser(AbstractUser, TimeStamp):
 
     def __str__(self):
         return str(self.email)
-
-
-class ExperienceChoices(models.TextChoices):
-    """Указание опыта юзера."""
-
-    LESS_1 = ("0-1", "0-1 год")
-    MORE_1_LESS_3 = ("1-3", "1-3 года")
-    MORE_3_LESS_5 = ("3-5", "3-5 лет")
-    MORE_5_LESS_10 = ("5-10", "5-10 лет")
-    MORE_10 = ("10+", "Больше 10 лет")
 
 
 class Specialization(models.Model):
@@ -118,10 +102,10 @@ class CustomUserInfo(models.Model):
         "Место работы",
         max_length=FieldLength.MAX_LENGTH_JOB.value,
     )
-    experience = models.TextField(
+    experience = models.CharField(
         "Опыт работы",
-        choices=ExperienceChoices.choices,
-        default=ExperienceChoices.LESS_1,
+        choices=choice_classes.ExperienceChoices.choices,
+        default=choice_classes.ExperienceChoices.LESS_1,
         max_length=FieldLength.MAX_LENGTH_EXPERIENCE.value,
     )
     specialization = models.ForeignKey(
