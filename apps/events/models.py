@@ -1,8 +1,8 @@
-from django.contrib.auth.models import User
 from django.db import models
 
 from apps.core.constants import EventFieldLength
 from apps.core.models import EventTimeStamp
+from apps.users.models import CustomUser
 
 
 class FormatChoices(models.TextChoices):
@@ -65,13 +65,13 @@ class Events(EventTimeStamp):
         default="",
     )
     creator = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.CASCADE,
         verbose_name="организатор",
         related_name="events_created",
     )
     moderator = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.CASCADE,
         verbose_name="модератор",
         related_name="events_moderated",
