@@ -7,7 +7,7 @@ from apps.core.constants import MAX_LENGTH_NOTIFICATION_TEXT
 
 class Notification(models.Model):
     """Модель уведомления"""
-    text = models.CharField(
+    text = models.TextField(
         "текст уведомления",
         max_length=MAX_LENGTH_NOTIFICATION_TEXT
     )
