@@ -10,7 +10,7 @@ class Report(models.Model):
         max_length=ReportFieldLength.MAX_LENGTH_TITLE.value,
         unique=True
     )
-    description = models.CharField(
+    description = models.TextField(
         "описание долкада",
         max_length=ReportFieldLength.MAX_LENGTH_DESCRIPTION.value,
         unique=True
