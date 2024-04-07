@@ -1,6 +1,17 @@
 from django.contrib import admin
 
-from .models import Events, EventTags
+from .models import Report, Events, EventTags
+
+
+class ReportInline(admin.StackedInline):
+    model = Report
+
+
+@admin.register(Report)
+class ReportAdmin(admin.ModelAdmin):
+    list_display = ("title", "speaker", "event",)
+    list_filter = ("event", "speaker",)
+    search_fields = ("title", "speaker",)
 
 
 @admin.register(EventTags)
@@ -15,3 +26,7 @@ class EventsAdmin(admin.ModelAdmin):
     list_filter = ("city", "format")
     search_fields = ("title", "description", "city")
     filter_horizontal = ("tags",)
+    inlines = [
+        ReportInline,
+    ]
+
