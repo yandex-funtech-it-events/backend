@@ -3,7 +3,6 @@ from django.db import models
 from apps.core.constants import (
   EventFieldLength, ReportFieldLength
 )
-from apps.core.constants import 
 from apps.core.models import EventTimeStamp
 from apps.users.models import CustomUser
 
