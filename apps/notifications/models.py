@@ -14,10 +14,10 @@ class Notification(models.Model):
     created_at = models.DateTimeField(
         "дата создания", auto_now_add=True,
     )
-    date_popup = models.DateTimeField(
+    notification_at = models.DateTimeField(
         "дата оповещения", default=None,
     )
-    qrcode_ticket = models.ImageField(
+    ticket_qr_code = models.ImageField(
         "qr код для мероприятия",
         blank=True, upload_to="qr_codes/"
     )

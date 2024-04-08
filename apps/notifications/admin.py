@@ -10,6 +10,6 @@ class NotificationAdmin(admin.ModelAdmin):
         "event",
         "text",
         "created_at",
-        "date_popup"
+        "notification_at",
     )
-    search_fields = ("user", "event")
+    search_fields = ("user", "event",)
