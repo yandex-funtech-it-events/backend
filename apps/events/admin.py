@@ -1,6 +1,18 @@
 from django.contrib import admin
 
-from .models import Report, Events, EventTags
+from .models import (
+  Report, Events, EventTags, Registration
+)
+
+
+@admin.register(Registration)
+class RegistrationAdmin(admin.ModelAdmin):
+    list_display = (
+        "user",
+        "event",
+        "registration_stage",
+    )
+    search_fields = ("user", "event")
 
 
 class ReportInline(admin.StackedInline):
@@ -29,4 +41,3 @@ class EventsAdmin(admin.ModelAdmin):
     inlines = [
         ReportInline,
     ]
-
