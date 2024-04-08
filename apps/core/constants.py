@@ -15,6 +15,7 @@ class FieldLength(IntEnum):
     MAX_LENGTH_PASSWORD = 150
     # Максимальная длина поля role CustomUser.role
     MAX_LENGTH_ROLE = 150
+
     # Масимальная длина поля phone CustomUser.phone
     MAX_LENGTH_PHONE = 15
     # Масимальная длина поля job CustomUserInfo.job
@@ -54,3 +55,11 @@ class EventFieldLength(IntEnum):
     MAX_LENGTH_STREAM_LINK = 200
     MAX_LENGTH_FORMAT = 7
     MAX_LENGTH_TAG = 20
+
+
+# Максимальнная длина поля
+# Registration.registration_stage
+MAX_LENGTH_REGISTRATION_STAGE = 20
+
+# Максимальная длина поля Notification.text
+MAX_LENGTH_NOTIFICATION_TEXT = 200
