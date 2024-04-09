@@ -99,29 +99,29 @@ class Events(EventTimeStamp):
 
 class Report(models.Model):
     """Модель докладов мероприятия"""
-    title = models.CharField(
+    topic = models.CharField(
         "название доклада",
-        max_length=ReportFieldLength.MAX_LENGTH_TITLE.value,
+        max_length=ReportFieldLength.MAX_LENGTH_TOPIC.value,
         unique=True
     )
-    description = models.TextField(
+    short_description = models.TextField(
         "описание долкада",
         max_length=ReportFieldLength.MAX_LENGTH_DESCRIPTION.value,
         unique=True
     )
-    date_start = models.DateTimeField(
+    start_at = models.DateTimeField(
         "дата начала доклада", default=None, db_index=True
     )
-    date_end = models.DateTimeField(
+    end_at = models.DateTimeField(
         "дата окончания доклада", default=None, db_index=True
     )
     speaker = models.CharField(
         "Фамилиия и имя спикера",
         max_length=ReportFieldLength.MAX_LENGTH_SPEAKER.value,
     )
-    speaker_title = models.CharField(
+    position = models.CharField(
         "Должность спикера",
-        max_length=ReportFieldLength.MAX_LENGTH_SPEAKER_TITLE.value,
+        max_length=ReportFieldLength.MAX_LENGTH_POSITION.value,
     )
     speaker_photo = models.ImageField(
         "Фотография спикера", blank=True, upload_to="speakers_pictures/"
@@ -136,10 +136,10 @@ class Report(models.Model):
     class Meta:
         verbose_name = 'Доклад'
         verbose_name_plural = "Доклады"
-        ordering = ["-date_start"]
+        ordering = ["-start_at"]
 
     def __str__(self):
-        return str(self.title[:50])
+        return str(self.topic[:50])
 
 
 class Registration(models.Model):

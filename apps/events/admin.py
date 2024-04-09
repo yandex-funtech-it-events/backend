@@ -21,9 +21,9 @@ class ReportInline(admin.StackedInline):
 
 @admin.register(Report)
 class ReportAdmin(admin.ModelAdmin):
-    list_display = ("title", "speaker", "event",)
+    list_display = ("topic", "speaker", "event",)
     list_filter = ("event", "speaker",)
-    search_fields = ("title", "speaker",)
+    search_fields = ("topic", "speaker",)
 
 
 @admin.register(EventTags)
