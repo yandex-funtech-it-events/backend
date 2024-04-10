@@ -3,11 +3,10 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from apps.api.urls import router_1
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('api/v1/', include(router_1.urls))
+    path("api/", include("apps.api.urls")),
 ]
 
 if settings.DEBUG:
