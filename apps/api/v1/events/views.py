@@ -13,9 +13,7 @@ class EventTagsViewSet(viewsets.ModelViewSet):
     serializer_class = EventTagsSerializer
 
     def get_permissions(self):
-        if self.action == "list":
-            return [IsAuthenticated()]
-        elif self.action == "create":
+        if self.action in ["list", "create"]:
             return [IsAuthenticated()]
         elif self.action in ["partial_update", "destroy"]:
             return [IsOrganizerOrReadOnly()]
