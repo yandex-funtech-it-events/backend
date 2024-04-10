@@ -30,7 +30,8 @@ class FieldLength(IntEnum):
     MAX_SLUG = 50
     # Максимальная длина поля CharField для моделей общий
     MAX_NAME = 150
- 
+
+
 class ReportFieldLength(IntEnum):
     """Длины полей для модели докладов"""
 

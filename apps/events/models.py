@@ -1,25 +1,13 @@
 from django.db import models
 
-from apps.core.models import EventTimeStamp
-from apps.users.models import CustomUser
 from apps.core.constants import (
-  EventFieldLength, ReportFieldLength
+    MAX_LENGTH_REGISTRATION_STAGE,
+    EventFieldLength,
+    ReportFieldLength,
 )
-from apps.core.constants import MAX_LENGTH_REGISTRATION_STAGE
-
-
-class RegistrationStageChoices(models.TextChoices):
-    """Стадия регистрации на мероприятие"""
-    PARTICIPATED = ("participated", "Участвовал")
-    PARTICIPATING = ("participating", "Участвую")
-    NOT_REGISTERED = ("not_registered", "Не зарегистрирован")
-
-
-class FormatChoices(models.TextChoices):
-    """Формат проведения турнира"""
-
-    ONLINE = ("online", "онлайн")
-    OFFLINE = ("offline", "оффлайн")
+from apps.core.models import EventTimeStamp
+from apps.events import choice_classes
+from apps.users.models import CustomUser
 
 
 class EventTags(models.Model):
@@ -66,7 +54,7 @@ class Events(EventTimeStamp):
     format = models.CharField(
         "формат мероприятия",
         max_length=EventFieldLength.MAX_LENGTH_FORMAT.value,
-        choices=FormatChoices.choices,
+        choices=choice_classes.FormatChoices.choices,
     )
     stream_link = models.URLField(
         "ссылка на трансляцию",
@@ -99,15 +87,16 @@ class Events(EventTimeStamp):
 
 class Report(models.Model):
     """Модель докладов мероприятия"""
+
     title = models.CharField(
         "название доклада",
         max_length=ReportFieldLength.MAX_LENGTH_TITLE.value,
-        unique=True
+        unique=True,
     )
     description = models.TextField(
         "описание долкада",
         max_length=ReportFieldLength.MAX_LENGTH_DESCRIPTION.value,
-        unique=True
+        unique=True,
     )
     date_start = models.DateTimeField(
         "дата начала доклада", default=None, db_index=True
@@ -130,11 +119,11 @@ class Report(models.Model):
         Events,
         on_delete=models.CASCADE,
         verbose_name="доклад",
-        related_name="reported_at_event"
+        related_name="reported_at_event",
     )
 
     class Meta:
-        verbose_name = 'Доклад'
+        verbose_name = "Доклад"
         verbose_name_plural = "Доклады"
         ordering = ["-date_start"]
 
@@ -149,13 +138,13 @@ class Registration(models.Model):
         Events,
         on_delete=models.CASCADE,
         verbose_name="мероприятие",
-        related_name="registrated_event"
+        related_name="registrated_event",
     )
     user = models.ForeignKey(
         CustomUser,
         on_delete=models.CASCADE,
         verbose_name="участник",
-        related_name="participants"
+        related_name="participants",
     )
     # notification = models.ForeignKey(
     #     Notification,
@@ -165,9 +154,9 @@ class Registration(models.Model):
     # )
     registration_stage = models.CharField(
         "стадия регистрации",
-        choices=RegistrationStageChoices.choices,
-        default=RegistrationStageChoices.NOT_REGISTERED,
-        max_length=MAX_LENGTH_REGISTRATION_STAGE
+        choices=choice_classes.RegistrationStageChoices.choices,
+        default=choice_classes.RegistrationStageChoices.NOT_REGISTERED,
+        max_length=MAX_LENGTH_REGISTRATION_STAGE,
     )
 
     class Meta:
