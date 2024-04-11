@@ -11,8 +11,13 @@ class ReportViewSet(viewsets.ModelViewSet):
     serializer_class = ReportSerializer
     permission_classes = (
         IsOrganizerOrReadOnly,
-        IsAuthenticated
+        IsAuthenticated,
     )
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["event_id"] = self.kwargs.get('event_id', None)
+        return context
 
     def get_queryset(self):
         queryset = Report.objects.filter(
