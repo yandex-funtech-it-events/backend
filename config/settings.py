@@ -33,6 +33,7 @@ DJANGO_APPS = [
 ]
 
 LOCAL_APPS = [
+    "drf_spectacular",
     "rest_framework",
     "rest_framework_simplejwt",
 ]
@@ -127,12 +128,20 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Yandex FunTech IT Meetups",
+    "DESCRIPTION": "Сервис для участников it мероприятий",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 ONE_WEEK_IN_SECONDS = 604800
