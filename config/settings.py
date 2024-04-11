@@ -2,6 +2,7 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+from corsheaders.defaults import default_headers
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -16,6 +17,10 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost 127.0.0.1").split(" ")
+CSRF_TRUSTED_ORIGINS = os.environ["CSRF_TRUSTED_ORIGINS"].split(",")
+CORS_URLS_REGEX = r"^/api/.*$"
+CORS_ALLOW_HEADERS = [*default_headers, "x-xsrf-token"]
+CORS_ALLOW_CREDENTIALS = True
 
 
 DJANGO_APPS = [
@@ -47,6 +52,7 @@ INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
