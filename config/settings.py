@@ -29,6 +29,7 @@ DJANGO_APPS = [
 
 LOCAL_APPS = [
     "rest_framework",
+    "djoser",
     "rest_framework_simplejwt",
 ]
 
@@ -120,6 +121,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+AUTHENTICATION_BACKENDS = [
+    "apps.users.backends.AuthBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
@@ -131,6 +137,7 @@ REST_FRAMEWORK = {
 
 ONE_WEEK_IN_SECONDS = 604800
 SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ("Bearer",),
     "ACCESS_TOKEN_LIFETIME": timedelta(
         seconds=int(os.getenv("ACCESS_TOKEN_LIFETIME", ONE_WEEK_IN_SECONDS))
     ),
@@ -138,4 +145,17 @@ SIMPLE_JWT = {
         seconds=int(os.getenv("REFRESH_TOKEN_LIFETIME", ONE_WEEK_IN_SECONDS))
     ),
     "ROTATE_REFRESH_TOKENS": True,
+}
+
+DJOSER = {
+    "TOKEN_MODEL": None,
+    "SERIALIZERS": {
+        "user_create": "apps.api.v1.users.serializers.CustomUserCreateSerializer",
+        "user": "apps.api.v1.users.serializers.CustomUserSerializer",
+        "current_user": "apps.api.v1.users.serializers.CustomUserSerializer",
+    },
+    "PERMISSIONS": {
+        "user": ["djoser.permissions.CurrentUserOrAdminOrReadOnly"],
+        "user_list": ["rest_framework.permissions.IsAuthenticatedOrReadOnly"],
+    },
 }

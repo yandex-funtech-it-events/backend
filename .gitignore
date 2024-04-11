@@ -160,3 +160,6 @@ cython_debug/
 .idea/
 media/
 .vscode/
+
+# My baks
+*.bak_my

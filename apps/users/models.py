@@ -13,6 +13,12 @@ class CustomUser(AbstractUser, TimeStamp):
     По логике эти данные будут подтягиваться из Яндекс ID.
     """
 
+    username = models.CharField(
+        "Имя пользователя",
+        unique=True,
+        blank=True,
+        max_length=FieldLength.MAX_LENGTH_USERNAME.value,
+    )
     email = models.EmailField(
         "Почта",
         unique=True,
@@ -41,6 +47,9 @@ class CustomUser(AbstractUser, TimeStamp):
         default=choice_classes.RoleChoices.ATTENDEE,
         max_length=FieldLength.MAX_LENGTH_ROLE.value,
     )
+
+    USERNAME_FIELD = "username"
+    REQUIRED_FIELDS = ["phone", "email"]
 
     class Meta:
         verbose_name = "Пользователь"

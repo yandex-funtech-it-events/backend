@@ -5,6 +5,8 @@ class FieldLength(IntEnum):
     """Длины полей в приложении юзеров"""
 
     # Атрибуты приложения Юзеров
+    # Максимальная длина поля username CustomUser.email
+    MAX_LENGTH_USERNAME = 254
     # Максимальная длина поля email CustomUser.email
     MAX_LENGTH_EMAIL = 254
     # Максимальная длина поля first_name CustomUser.first_name
@@ -30,7 +32,8 @@ class FieldLength(IntEnum):
     MAX_SLUG = 50
     # Максимальная длина поля CharField для моделей общий
     MAX_NAME = 150
- 
+
+
 class ReportFieldLength(IntEnum):
     """Длины полей для модели докладов"""
 
