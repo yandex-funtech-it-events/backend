@@ -9,9 +9,15 @@ from apps.api.v1.events.permissions import IsOrganizerOrReadOnly
 from apps.api.v1.events.serializers import (
     EventsSerializer,
     EventTagsSerializer,
+    ReportSerializer,
     RegistrationSerializer,
 )
-from apps.events.models import Events, EventTags, Registration
+from apps.events.models import (
+    Events,
+    EventTags,
+    Report,
+    Registration
+)
 from apps.events.choice_classes import RegistrationStageChoices
 
 
@@ -115,3 +121,23 @@ class EventsViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class ReportViewSet(viewsets.ModelViewSet):
+    """Обработчик запросов на эндпойнты Report"""
+    serializer_class = ReportSerializer
+    permission_classes = (
+        IsOrganizerOrReadOnly,
+        IsAuthenticated,
+    )
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["event_id"] = self.kwargs.get("event_id", None)
+        return context
+
+    def get_queryset(self):
+        queryset = Report.objects.filter(
+            event=self.kwargs.get("event_id", None)
+        )
+        return queryset

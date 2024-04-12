@@ -145,12 +145,9 @@ class Registration(models.Model):
         verbose_name="участник",
         related_name="participants",
     )
-    # notification = models.ForeignKey(
-    #     Notification,
-    #     on_delete=models.SET_NULL,
-    #     verbose_name="уведомление",
-    #     related_name="notifications"
-    # )
+    created_at = models.DateTimeField(
+        "дата создания", auto_now_add=True,
+    )
     registration_stage = models.CharField(
         "стадия регистрации",
         choices=choice_classes.RegistrationStageChoices.choices,
