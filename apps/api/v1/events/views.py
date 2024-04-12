@@ -1,10 +1,9 @@
-from datetime import datetime
-
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 
 from apps.api.v1.events.permissions import IsOrganizerOrReadOnly
 from apps.api.v1.events.serializers import (
@@ -60,7 +59,7 @@ class EventsViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        if event.registration_close < datetime.now:
+        if event.registration_close < timezone.now():
             return Response(
                 {"error": "Регистрация на мероприятия закрыта"},
                 status=status.HTTP_400_BAD_REQUEST
