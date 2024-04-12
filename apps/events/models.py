@@ -122,7 +122,7 @@ class Report(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Доклад'
+        verbose_name = "Доклад"
         verbose_name_plural = "Доклады"
         ordering = ["-start_at"]
 
