@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.events.models import Events, EventTags
+from apps.events.models import Events, EventTags, Registration
 
 
 class EventTagsSerializer(serializers.ModelSerializer):
@@ -74,3 +74,17 @@ class EventsSerializer(serializers.ModelSerializer):
             tag, _ = EventTags.objects.get_or_create(**tag_data)
             event.tags.add(tag)
         return event
+
+
+class RegistrationSerializer(serializers.ModelSerializer):
+    """Сериализатор для модели Registration"""
+    event = serializers.PrimaryKeyRelatedField(
+        read_only=True
+    )
+    user = serializers.PrimaryKeyRelatedField(
+        read_only=True
+    )
+
+    class Meta:
+        model = Registration
+        fields = ("id", "event", "user", "created_at",)
