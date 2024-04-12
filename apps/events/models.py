@@ -1,25 +1,13 @@
 from django.db import models
 
-from apps.core.models import EventTimeStamp
-from apps.users.models import CustomUser
 from apps.core.constants import (
-  EventFieldLength, ReportFieldLength
+    MAX_LENGTH_REGISTRATION_STAGE,
+    EventFieldLength,
+    ReportFieldLength,
 )
-from apps.core.constants import MAX_LENGTH_REGISTRATION_STAGE
-
-
-class RegistrationStageChoices(models.TextChoices):
-    """Стадия регистрации на мероприятие"""
-    PARTICIPATED = ("participated", "Участвовал")
-    PARTICIPATING = ("participating", "Участвую")
-    NOT_REGISTERED = ("not_registered", "Не зарегистрирован")
-
-
-class FormatChoices(models.TextChoices):
-    """Формат проведения турнира"""
-
-    ONLINE = ("online", "онлайн")
-    OFFLINE = ("offline", "оффлайн")
+from apps.core.models import EventTimeStamp
+from apps.events import choice_classes
+from apps.users.models import CustomUser
 
 
 class EventTags(models.Model):
@@ -66,7 +54,7 @@ class Events(EventTimeStamp):
     format = models.CharField(
         "формат мероприятия",
         max_length=EventFieldLength.MAX_LENGTH_FORMAT.value,
-        choices=FormatChoices.choices,
+        choices=choice_classes.FormatChoices.choices,
     )
     stream_link = models.URLField(
         "ссылка на трансляцию",
@@ -134,7 +122,7 @@ class Report(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Доклад'
+        verbose_name = "Доклад"
         verbose_name_plural = "Доклады"
         ordering = ["-start_at"]
 
@@ -149,22 +137,25 @@ class Registration(models.Model):
         Events,
         on_delete=models.CASCADE,
         verbose_name="мероприятие",
-        related_name="registrated_event"
+        related_name="registrated_event",
     )
     user = models.ForeignKey(
         CustomUser,
         on_delete=models.CASCADE,
         verbose_name="участник",
-        related_name="participants"
+        related_name="participants",
     )
     created_at = models.DateTimeField(
         "дата создания", auto_now_add=True,
     )
     registration_stage = models.CharField(
         "стадия регистрации",
-        choices=RegistrationStageChoices.choices,
-        default=RegistrationStageChoices.NOT_REGISTERED,
-        max_length=MAX_LENGTH_REGISTRATION_STAGE
+        choices=choice_classes.RegistrationStageChoices.choices,
+        default=choice_classes.RegistrationStageChoices.NOT_REGISTERED,
+        max_length=MAX_LENGTH_REGISTRATION_STAGE,
+    )
+    created_at = models.DateTimeField(
+        "дата создания", auto_now_add=True,
     )
 
     class Meta:
