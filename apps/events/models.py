@@ -162,3 +162,27 @@ class Registration(models.Model):
     class Meta:
         verbose_name = "Регистрация"
         verbose_name_plural = "Регистрации"
+
+
+class Favorites(models.Model):
+    """Модель добавления мероприятия в избранное"""
+
+    user = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        verbose_name="участник",
+        related_name="participants_favorite",
+    )
+    event = models.ForeignKey(
+        Events,
+        on_delete=models.CASCADE,
+        verbose_name="мероприятие",
+        related_name="event_favorite",
+    )
+
+    class Meta:
+        verbose_name = "избранное мероприятие"
+        verbose_name_plural = "избранные мероприятия"
+
+    def __str__(self):
+        return f"{self.user} - {self.event}"

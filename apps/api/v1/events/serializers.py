@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.events.models import Events, EventTags
+from apps.events.models import Events, EventTags, Favorites
 
 
 class EventTagsSerializer(serializers.ModelSerializer):
@@ -74,3 +74,11 @@ class EventsSerializer(serializers.ModelSerializer):
             tag, _ = EventTags.objects.get_or_create(**tag_data)
             event.tags.add(tag)
         return event
+
+
+class FavoritesSerializers(serializers.ModelSerializer):
+    """Сериализатор для работы с избранными мероприятиями"""
+
+    class Meta:
+        model = Favorites
+        fields = "__all__"

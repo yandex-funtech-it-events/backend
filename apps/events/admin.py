@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Events, EventTags, Registration, Report
+from .models import Events, EventTags, Favorites, Registration, Report
 
 
 @admin.register(Registration)
@@ -20,6 +20,7 @@ class ReportInline(admin.StackedInline):
 @admin.register(Report)
 class ReportAdmin(admin.ModelAdmin):
     list_display = (
+        "id",
         "title",
         "speaker",
         "event",
@@ -42,10 +43,16 @@ class EventTagsAdmin(admin.ModelAdmin):
 
 @admin.register(Events)
 class EventsAdmin(admin.ModelAdmin):
-    list_display = ("title", "city", "format", "creator", "moderator")
+    list_display = ("id", "title", "city", "format", "creator", "moderator")
     list_filter = ("city", "format")
     search_fields = ("title", "description", "city")
     filter_horizontal = ("tags",)
     inlines = [
         ReportInline,
     ]
+
+
+@admin.register(Favorites)
+class FavoritesAdmin(admin.ModelAdmin):
+    list_display = ["user", "event"]
+    list_filter = ["user"]
