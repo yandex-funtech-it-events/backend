@@ -142,6 +142,11 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "Сервис для участников it мероприятий",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "persistAuthorization": True,
+        "displayOperationId": True,
+    },
 }
 
 ONE_WEEK_IN_SECONDS = 604800
