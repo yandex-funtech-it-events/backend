@@ -8,6 +8,9 @@ from apps.users.models import (
     CustomUserFilter,
     CustomUserInfo,
     CustomUserSettings,
+    NotificationEventType,
+    NotificationMethod,
+    NotificationTime,
     Specialization,
 )
 
@@ -51,6 +54,24 @@ class SpecializationSerializer(serializers.ModelSerializer):
         )
 
 
+class NotificationTimeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NotificationTime
+        fields = ("id", "name", "slug")
+
+
+class NotificationMethodSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NotificationMethod
+        fields = ("id", "name", "slug")
+
+
+class NotificationEventTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NotificationEventType
+        fields = ("id", "name", "slug")
+
+
 class CustomUserInfoSerializer(serializers.ModelSerializer):
     """
     Сериализатор для получения доп. информации о пользователях.
@@ -70,6 +91,7 @@ class CustomUserInfoSerializer(serializers.ModelSerializer):
             "specialization",
             "user_agree_personal_info",
             "user_agree_publish_cv",
+            "user_agree_publish_media",
         )
 
     def get_specialization(self, obj):
@@ -86,11 +108,23 @@ class CustomUserSettingsSerializer(serializers.ModelSerializer):
     Сериализатор для получения настроек пользователя.
     """
 
+    ev_notification_start_time = NotificationTimeSerializer(many=True, read_only=True)
+    ev_notification_start_method = NotificationMethodSerializer(
+        many=True, read_only=True
+    )
+    ev_type_notification_new = NotificationEventTypeSerializer(
+        many=True, read_only=True
+    )
+    ev_notification_new_method = NotificationMethodSerializer(many=True, read_only=True)
+
     class Meta:
         model = CustomUserSettings
         fields = (
             "ev_notification_start",
-            "ev_notification_new",
+            "ev_notification_start_time",
+            "ev_notification_start_method" "ev_notification_new",
+            "ev_type_notification_new",
+            "ev_notification_new_method",
         )
 
 
@@ -115,9 +149,9 @@ class CustomUserSerializer(UserSerializer):
     Сериализатор для чтения информации о пользователе.
     """
 
-    info = SerializerMethodField()
+    info = CustomUserInfoSerializer(source="customuser")
+    filter = CustomUserFilterSerializer(source="customuser")
     settings = SerializerMethodField()
-    filter = SerializerMethodField()
 
     class Meta:
         model = CustomUser
@@ -134,14 +168,6 @@ class CustomUserSerializer(UserSerializer):
             "filter",
         )
 
-    def get_info(self, obj):
-        try:
-            info = obj.info
-            serializer = CustomUserInfoSerializer(info)
-            return serializer.data
-        except CustomUserInfo.DoesNotExist:
-            return None
-
     def get_settings(self, obj):
         try:
             settings = obj.settings
@@ -149,15 +175,3 @@ class CustomUserSerializer(UserSerializer):
             return serializer.data
         except CustomUserSettings.DoesNotExist:
             return None
-
-    def get_filter(self, obj):
-        filter = {}
-        try:
-            filter["is_ev_online"] = obj.filter.is_ev_online
-            filter["city"] = obj.filter.city
-            filter["specializations"] = [
-                spec.name for spec in obj.filter.specialization.all()
-            ]
-        except CustomUserFilter.DoesNotExist:
-            return None
-        return filter
