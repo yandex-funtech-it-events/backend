@@ -13,6 +13,11 @@ class CustomUser(AbstractUser, TimeStamp):
     По логике эти данные будут подтягиваться из Яндекс ID.
     """
 
+    username = models.CharField(
+        "Имя пользователя",
+        unique=True,
+        max_length=FieldLength.MAX_LENGTH_USERNAME.value,
+    )
     email = models.EmailField(
         "Почта",
         unique=True,
@@ -41,6 +46,9 @@ class CustomUser(AbstractUser, TimeStamp):
         default=choice_classes.RoleChoices.ATTENDEE,
         max_length=FieldLength.MAX_LENGTH_ROLE.value,
     )
+
+    USERNAME_FIELD = "username"
+    REQUIRED_FIELDS = ["phone", "email"]
 
     class Meta:
         verbose_name = "Пользователь"
@@ -79,6 +87,75 @@ class Specialization(models.Model):
         ordering = ["name"]
 
 
+class NotificationTime(models.Model):
+    """Модель времени уведомления."""
+
+    name = models.CharField(
+        "Название",
+        unique=True,
+        max_length=255,
+    )
+    slug = models.SlugField(
+        "Уникальный слаг",
+        unique=True,
+        max_length=255,
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Время уведомления"
+        verbose_name_plural = "Время уведомления"
+        ordering = ["pk"]
+
+
+class NotificationEventType(models.Model):
+    """Модель типа события для уведомления."""
+
+    name = models.CharField(
+        "Название",
+        unique=True,
+        max_length=255,
+    )
+    slug = models.SlugField(
+        "Уникальный слаг",
+        unique=True,
+        max_length=255,
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Тип события для уведомления"
+        verbose_name_plural = "Типы события для уведомления"
+        ordering = ["pk"]
+
+
+class NotificationMethod(models.Model):
+    """Модель способа уведомлений."""
+
+    name = models.CharField(
+        "Название",
+        unique=True,
+        max_length=255,
+    )
+    slug = models.SlugField(
+        "Уникальный слаг",
+        unique=True,
+        max_length=255,
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Тип уведомления"
+        verbose_name_plural = "Типы уведомления"
+        ordering = ["pk"]
+
+
 class CustomUserInfo(models.Model):
     """
     Модель для дополнительной информации о пользователе.
@@ -105,8 +182,14 @@ class CustomUserInfo(models.Model):
     experience = models.CharField(
         "Опыт работы",
         choices=choice_classes.ExperienceChoices.choices,
-        default=choice_classes.ExperienceChoices.LESS_1,
+        default=choice_classes.ExperienceChoices.NO_EXP,
         max_length=FieldLength.MAX_LENGTH_EXPERIENCE.value,
+    )
+    custom_experience = models.CharField(
+        "Другой опыт работы",
+        max_length=FieldLength.MAX_LENGTH_EXPERIENCE.value,
+        blank=True,
+        null=True,
     )
     specialization = models.ForeignKey(
         Specialization,
@@ -124,6 +207,10 @@ class CustomUserInfo(models.Model):
         "Согласие на публикацию резюме",
         default=False,
     )
+    user_agree_publish_media = models.BooleanField(
+        "Согласие на публикацию фото/видео",
+        default=False,
+    )
 
     class Meta:
         verbose_name = "Доп. инфо о пользователе"
@@ -132,6 +219,11 @@ class CustomUserInfo(models.Model):
 
     def __str__(self):
         return str(self.pk)
+
+    def save(self, *args, **kwargs):
+        if self.experience == choice_classes.ExperienceChoices.OTHER:
+            self.experience = self.custom_experience
+        super().save(*args, **kwargs)
 
 
 class CustomUserSettings(models.Model):
@@ -149,9 +241,29 @@ class CustomUserSettings(models.Model):
         "Уведомлять о начале событий",
         default=False,
     )
+    ev_notification_start_time = models.ManyToManyField(
+        NotificationTime,
+        verbose_name="Время уведомлений",
+        related_name="settings",
+    )
+    ev_notification_start_method = models.ManyToManyField(
+        NotificationMethod,
+        verbose_name="Способ уведомления для выбранных событий",
+        related_name="settings",
+    )
     ev_notification_new = models.BooleanField(
         "Уведомлять о новых событиях",
         default=False,
+    )
+    ev_type_notification = models.ManyToManyField(
+        NotificationEventType,
+        verbose_name="Тип события для уведомлений",
+        related_name="settings",
+    )
+    ev_notification_new_method = models.ManyToManyField(
+        NotificationMethod,
+        verbose_name="Способ уведомления для новых событий",
+        related_name="settings",
     )
 
     class Meta:

@@ -35,7 +35,9 @@ DJANGO_APPS = [
 LOCAL_APPS = [
     "drf_spectacular",
     "rest_framework",
+    "djoser",
     "rest_framework_simplejwt",
+    'qr_code',
 ]
 
 THIRD_PARTY_APPS = [
@@ -127,6 +129,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+AUTHENTICATION_BACKENDS = [
+    "apps.users.backends.AuthBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_PERMISSION_CLASSES": [
@@ -142,10 +149,18 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "Сервис для участников it мероприятий",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "persistAuthorization": True,
+        "displayOperationId": True,
+    },
+    "SWAGGER_UI_DIST": "//unpkg.com/swagger-ui-dist@3.35.1",
 }
+
 
 ONE_WEEK_IN_SECONDS = 604800
 SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ("Bearer",),
     "ACCESS_TOKEN_LIFETIME": timedelta(
         seconds=int(os.getenv("ACCESS_TOKEN_LIFETIME", ONE_WEEK_IN_SECONDS))
     ),
@@ -153,4 +168,17 @@ SIMPLE_JWT = {
         seconds=int(os.getenv("REFRESH_TOKEN_LIFETIME", ONE_WEEK_IN_SECONDS))
     ),
     "ROTATE_REFRESH_TOKENS": True,
+}
+
+DJOSER = {
+    "TOKEN_MODEL": None,
+    "SERIALIZERS": {
+        "user_create": "apps.api.v1.users.serializers.CustomUserCreateSerializer",
+        "user": "apps.api.v1.users.serializers.CustomUserSerializer",
+        "current_user": "apps.api.v1.users.serializers.CustomUserSerializer",
+    },
+    "PERMISSIONS": {
+        "user": ["djoser.permissions.CurrentUserOrAdminOrReadOnly"],
+        "user_list": ["rest_framework.permissions.IsAuthenticatedOrReadOnly"],
+    },
 }

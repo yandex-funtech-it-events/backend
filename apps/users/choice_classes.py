@@ -12,8 +12,8 @@ class RoleChoices(models.TextChoices):
 class ExperienceChoices(models.TextChoices):
     """Указание опыта юзера."""
 
-    LESS_1 = ("0-1", "0-1 год")
-    MORE_1_LESS_3 = ("1-3", "1-3 года")
-    MORE_3_LESS_5 = ("3-5", "3-5 лет")
-    MORE_5_LESS_10 = ("5-10", "5-10 лет")
-    MORE_10 = ("10+", "Больше 10 лет")
+    NO_EXP = ("0", "Нет опыта")
+    MORE_1 = ("1", "От 1 года")
+    MORE_3 = ("3", "От 3 лет")
+    MORE_5 = ("5", "От 5 лет")
+    OTHER = ("other", "Другое")
