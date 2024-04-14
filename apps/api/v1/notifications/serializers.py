@@ -1,12 +1,11 @@
 import datetime
 
-from rest_framework import serializers
 from django.shortcuts import get_object_or_404
 from drf_extra_fields.fields import Base64ImageField
+from rest_framework import serializers
 
-from apps.notifications.models import Notification
 from apps.events.models import Events
-
+from apps.notifications.models import Notification
 
 NOTIFICATION_TIME = datetime.time(10, 0)
 
@@ -27,20 +26,11 @@ class NotificationSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        event = get_object_or_404(
-            Events,
-            id=self.context.get("event_id")
-        )
-        user = self.context.get('request').user
-        notification_at = datetime.datetime.combine(
-            event.date_start,
-            NOTIFICATION_TIME
-        )
+        event = get_object_or_404(Events, id=self.context.get("event_id"))
+        user = self.context.get("request").user
+        notification_at = datetime.datetime.combine(event.date_start, NOTIFICATION_TIME)
 
         notification = Notification.objects.create(
-            event=event,
-            user=user,
-            notification_at=notification_at,
-            **validated_data
+            event=event, user=user, notification_at=notification_at, **validated_data
         )
         return notification

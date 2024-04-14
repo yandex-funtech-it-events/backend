@@ -1,8 +1,6 @@
 from rest_framework import viewsets
 
-from apps.api.v1.notifications.serializers import (
-    NotificationSerializer,
-)
+from apps.api.v1.notifications.serializers import NotificationSerializer
 from apps.notifications.models import Notification
 
 
@@ -18,7 +16,5 @@ class NotificationViewSet(viewsets.ModelViewSet):
         return context
 
     def get_queryset(self):
-        queryset = Notification.objects.filter(
-            event=self.kwargs.get("event_id", None)
-        )
+        queryset = Notification.objects.filter(event=self.kwargs.get("event_id", None))
         return queryset

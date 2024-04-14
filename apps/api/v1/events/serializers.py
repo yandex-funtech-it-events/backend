@@ -1,14 +1,8 @@
-from rest_framework import serializers
-from drf_extra_fields.fields import Base64ImageField
 from django.shortcuts import get_object_or_404
+from drf_extra_fields.fields import Base64ImageField
+from rest_framework import serializers
 
-from apps.events.models import (
-    Events,
-    EventTags,
-    Report,
-    Registration,
-    Favorites
-)
+from apps.events.models import Events, EventTags, Favorites, Registration, Report
 
 
 class EventTagsSerializer(serializers.ModelSerializer):
@@ -84,13 +78,13 @@ class EventsSerializer(serializers.ModelSerializer):
         return event
 
 
-
 class FavoritesSerializers(serializers.ModelSerializer):
     """Сериализатор для работы с избранными мероприятиями"""
 
     class Meta:
         model = Favorites
         fields = "__all__"
+
 
 class ReportSerializer(serializers.ModelSerializer):
     """Сериализатор для модели Report"""
@@ -103,34 +97,27 @@ class ReportSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def validate_event(self, value):
-
         if not Events.objects.filter(id=value).exists():
-            raise serializers.ValidationError(
-                f"Меропроиятие с id={value} не найдено"
-            )
+            raise serializers.ValidationError(f"Меропроиятие с id={value} не найдено")
         return value
 
     def create(self, validated_data):
-        event = get_object_or_404(
-            Events,
-            id=self.context.get("event_id")
-        )
-        report = Report.objects.create(
-            event=event,
-            **validated_data
-        )
+        event = get_object_or_404(Events, id=self.context.get("event_id"))
+        report = Report.objects.create(event=event, **validated_data)
         return report
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
     """Сериализатор для модели Registration"""
-    event = serializers.PrimaryKeyRelatedField(
-        read_only=True
-    )
-    user = serializers.PrimaryKeyRelatedField(
-        read_only=True
-    )
+
+    event = serializers.PrimaryKeyRelatedField(read_only=True)
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Registration
-        fields = ("id", "event", "user", "created_at",)
+        fields = (
+            "id",
+            "event",
+            "user",
+            "created_at",
+        )

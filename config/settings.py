@@ -37,7 +37,7 @@ LOCAL_APPS = [
     "rest_framework",
     "djoser",
     "rest_framework_simplejwt",
-    'qr_code',
+    "qr_code",
 ]
 
 THIRD_PARTY_APPS = [

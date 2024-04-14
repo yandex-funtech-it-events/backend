@@ -1,10 +1,10 @@
 from django.urls import include, path
-from rest_framework_simplejwt.views import TokenObtainPairView
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 urlpatterns = [
     path("", include("apps.api.v1.events.urls")),
