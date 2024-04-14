@@ -246,11 +246,6 @@ class CustomUserSettings(models.Model):
         verbose_name="Время уведомлений",
         related_name="settings",
     )
-    ev_notification_start_method = models.ManyToManyField(
-        NotificationMethod,
-        verbose_name="Способ уведомления для выбранных событий",
-        related_name="settings",
-    )
     ev_notification_new = models.BooleanField(
         "Уведомлять о новых событиях",
         default=False,
@@ -260,9 +255,9 @@ class CustomUserSettings(models.Model):
         verbose_name="Тип события для уведомлений",
         related_name="settings",
     )
-    ev_notification_new_method = models.ManyToManyField(
+    ev_notification_method = models.ManyToManyField(
         NotificationMethod,
-        verbose_name="Способ уведомления для новых событий",
+        verbose_name="Способ уведомления для событий",
         related_name="settings",
     )
 

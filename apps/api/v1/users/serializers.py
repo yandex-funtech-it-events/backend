@@ -109,22 +109,19 @@ class CustomUserSettingsSerializer(serializers.ModelSerializer):
     """
 
     ev_notification_start_time = NotificationTimeSerializer(many=True, read_only=True)
-    ev_notification_start_method = NotificationMethodSerializer(
-        many=True, read_only=True
-    )
     ev_type_notification_new = NotificationEventTypeSerializer(
         many=True, read_only=True
     )
-    ev_notification_new_method = NotificationMethodSerializer(many=True, read_only=True)
+    ev_notification_method = NotificationMethodSerializer(many=True, read_only=True)
 
     class Meta:
         model = CustomUserSettings
         fields = (
             "ev_notification_start",
             "ev_notification_start_time",
-            "ev_notification_start_method" "ev_notification_new",
+            "ev_notification_new",
             "ev_type_notification_new",
-            "ev_notification_new_method",
+            "ev_notification_method",
         )
 
 
