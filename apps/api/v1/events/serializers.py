@@ -7,6 +7,7 @@ from apps.events.models import (
     EventTags,
     Report,
     Registration,
+    Favorites
 )
 
 
@@ -82,6 +83,14 @@ class EventsSerializer(serializers.ModelSerializer):
             event.tags.add(tag)
         return event
 
+
+
+class FavoritesSerializers(serializers.ModelSerializer):
+    """Сериализатор для работы с избранными мероприятиями"""
+
+    class Meta:
+        model = Favorites
+        fields = "__all__"
 
 class ReportSerializer(serializers.ModelSerializer):
     """Сериализатор для модели Report"""

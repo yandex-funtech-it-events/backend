@@ -9,6 +9,7 @@ from apps.api.v1.events.permissions import IsOrganizerOrReadOnly
 from apps.api.v1.events.serializers import (
     EventsSerializer,
     EventTagsSerializer,
+    FavoritesSerializers,
     ReportSerializer,
     RegistrationSerializer,
 )
@@ -16,7 +17,8 @@ from apps.events.models import (
     Events,
     EventTags,
     Report,
-    Registration
+    Registration,
+    Favorites
 )
 from apps.events.choice_classes import RegistrationStageChoices
 
@@ -141,3 +143,30 @@ class ReportViewSet(viewsets.ModelViewSet):
             event=self.kwargs.get("event_id", None)
         )
         return queryset
+
+
+class FavoritesViewSet(viewsets.ModelViewSet):
+    """Обработчик запросов на эндпоинты Favorites"""
+
+    queryset = Favorites.objects.all()
+    serializer_class = FavoritesSerializers
+
+    @action(detail=True, methods=["post"])
+    def add_event_to_favorites(self, request, pk=None):
+        event_id = request.data("event_id")
+        favorite = self.get.object()
+        favorite.events.add(event_id)
+        favorite.save()
+        return Response(
+            {"message: Event added to favorites"}, status=status.HTTP_200_OK
+        )
+
+    @action(detail=True, methods=["delete"])
+    def rm_event_from_favorites(self, request, pk=None):
+        event_id = request.data("event_id")
+        favorite = self.get.object()
+        favorite.events.remove(event_id)
+        favorite.save()
+        return Response(
+            {"message: Successfully removed from favorites"}, status=status.HTTP_200_OK
+        )
