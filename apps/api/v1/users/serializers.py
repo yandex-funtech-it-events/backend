@@ -146,10 +146,6 @@ class CustomUserSerializer(UserSerializer):
     Сериализатор для чтения информации о пользователе.
     """
 
-    info = CustomUserInfoSerializer(source="customuser")
-    filter = CustomUserFilterSerializer(source="customuser")
-    settings = SerializerMethodField()
-
     class Meta:
         model = CustomUser
         fields = (
