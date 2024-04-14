@@ -20,7 +20,7 @@ class ReportInline(admin.StackedInline):
 @admin.register(Report)
 class ReportAdmin(admin.ModelAdmin):
     list_display = (
-        "title",
+        "topic",
         "speaker",
         "event",
     )
@@ -29,7 +29,7 @@ class ReportAdmin(admin.ModelAdmin):
         "speaker",
     )
     search_fields = (
-        "title",
+        "topic",
         "speaker",
     )
 

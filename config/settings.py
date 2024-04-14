@@ -33,6 +33,7 @@ DJANGO_APPS = [
 ]
 
 LOCAL_APPS = [
+    "drf_spectacular",
     "rest_framework",
     "djoser",
     "rest_framework_simplejwt",
@@ -133,6 +134,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
@@ -140,6 +142,20 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
 }
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Yandex FunTech IT Meetups",
+    "DESCRIPTION": "Сервис для участников it мероприятий",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "persistAuthorization": True,
+        "displayOperationId": True,
+    },
+    "SWAGGER_UI_DIST": "//unpkg.com/swagger-ui-dist@3.35.1",
+}
+
 
 ONE_WEEK_IN_SECONDS = 604800
 SIMPLE_JWT = {
