@@ -1,6 +1,13 @@
-from django.urls import path
-from rest_framework_simplejwt.views import TokenObtainPairView
+from django.urls import include, path
+from rest_framework import routers
 
-urlpatterns = [
-    path("login/", TokenObtainPairView.as_view(), name="users_login"),
-]
+from apps.api.v1.users.views import CustomUserFilterViewSet, CustomUserViewSet
+
+router_users_v1 = routers.DefaultRouter()
+
+router_users_v1.register("", CustomUserViewSet)
+# router_users_v1.register("specialization_id", SpecializationViewSet)
+router_users_v1.register("filter", CustomUserFilterViewSet)
+
+
+urlpatterns = [path("", include(router_users_v1.urls))]
