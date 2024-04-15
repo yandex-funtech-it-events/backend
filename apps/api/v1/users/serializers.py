@@ -94,9 +94,6 @@ class CustomUserInfoSerializer(serializers.ModelSerializer):
             "user_agree_publish_media",
         )
 
-    def get_specialization(self, obj):
-        return obj.specialization.name if obj.specialization else None
-
     def update(self, instance, validated_data):
         instance = super().update(instance, validated_data)
         instance.save()
@@ -146,6 +143,10 @@ class CustomUserSerializer(UserSerializer):
     Сериализатор для чтения информации о пользователе.
     """
 
+    info = CustomUserInfoSerializer()
+    filter = CustomUserFilterSerializer()
+    settings = CustomUserSettingsSerializer()
+
     class Meta:
         model = CustomUser
         fields = (
@@ -160,11 +161,3 @@ class CustomUserSerializer(UserSerializer):
             "settings",
             "filter",
         )
-
-    def get_settings(self, obj):
-        try:
-            settings = obj.settings
-            serializer = CustomUserSettingsSerializer(settings)
-            return serializer.data
-        except CustomUserSettings.DoesNotExist:
-            return None
