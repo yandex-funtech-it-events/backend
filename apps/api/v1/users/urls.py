@@ -6,7 +6,6 @@ from apps.api.v1.users.views import CustomUserFilterViewSet, CustomUserViewSet
 router_users_v1 = routers.DefaultRouter()
 
 router_users_v1.register("", CustomUserViewSet)
-# router_users_v1.register("specialization_id", SpecializationViewSet)
 router_users_v1.register("filter", CustomUserFilterViewSet)
 
 

@@ -16,12 +16,14 @@ SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost 127.0.0.1").split(" ")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost 127.0.0.1 84.201.175.61").split(
+    " "
+)
 CSRF_TRUSTED_ORIGINS = os.environ["CSRF_TRUSTED_ORIGINS"].split(",")
 CORS_URLS_REGEX = r"^/api/.*$"
 CORS_ALLOW_HEADERS = [*default_headers, "x-xsrf-token"]
 CORS_ALLOW_CREDENTIALS = True
-
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(" ")
 
 DJANGO_APPS = [
     "django.contrib.admin",
@@ -38,6 +40,7 @@ LOCAL_APPS = [
     "djoser",
     "rest_framework_simplejwt",
     "qr_code",
+    "corsheaders",
 ]
 
 THIRD_PARTY_APPS = [
@@ -45,7 +48,6 @@ THIRD_PARTY_APPS = [
     "apps.users",
     "apps.events",
     "apps.notifications",
-    "apps.reviews",
     "apps.core",
 ]
 
