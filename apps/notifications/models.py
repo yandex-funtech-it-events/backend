@@ -20,7 +20,7 @@ class Notification(models.Model):
         default=None,
     )
     ticket_qr_code = models.ImageField(
-        "qr код для мероприятия", blank=True, upload_to="qr_codes/"
+        "qr код для мероприятия", blank=True, upload_to="qr_codes/",
     )
     event = models.ForeignKey(
         Events,
