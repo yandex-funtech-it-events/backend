@@ -94,6 +94,9 @@ class CustomUserInfoSerializer(serializers.ModelSerializer):
             "user_agree_publish_media",
         )
 
+    def get_specialization(self, obj):
+        return obj.specialization.name if obj.specialization else None
+
     def update(self, instance, validated_data):
         instance = super().update(instance, validated_data)
         instance.save()
