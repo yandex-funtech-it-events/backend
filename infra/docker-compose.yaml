@@ -4,10 +4,11 @@ name: yandex-funtech-it-meetups
 
 services:
   it-meetups-db:
-    image: postgres:latest
+    image: postgres:16.1-alpine
     container_name: it-meetups-db
     env_file:
       - ../.env
+    restart: on-failure
     volumes:
       - db_data:/var/lib/postgresql/data/
 
