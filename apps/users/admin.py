@@ -5,6 +5,9 @@ from .models import (
     CustomUserFilter,
     CustomUserInfo,
     CustomUserSettings,
+    NotificationEventType,
+    NotificationMethod,
+    NotificationTime,
     Specialization,
     SpecializationsInFilter,
 )
@@ -67,6 +70,24 @@ class CustomUserInfoAdmin(admin.ModelAdmin):
     empty_value_display = "-пусто-"
 
 
+@admin.register(NotificationTime)
+class NotificationTimeAdmin(admin.ModelAdmin):
+    list_display = ("name",)
+    search_fields = ("name",)
+
+
+@admin.register(NotificationEventType)
+class NotificationEventTypeAdmin(admin.ModelAdmin):
+    list_display = ("name",)
+    search_fields = ("name",)
+
+
+@admin.register(NotificationMethod)
+class NotificationMethodAdmin(admin.ModelAdmin):
+    list_display = ("name",)
+    search_fields = ("name",)
+
+
 @admin.register(CustomUserSettings)
 class CustomUserSettingsAdmin(admin.ModelAdmin):
     """Управление настройками пользователя"""
@@ -78,6 +99,11 @@ class CustomUserSettingsAdmin(admin.ModelAdmin):
     )
     list_display_links = ("user",)
     search_fields = ("user",)
+    filter_horizontal = (
+        "ev_notification_method",
+        "ev_type_notification",
+        "ev_notification_start_time",
+    )
     empty_value_display = "-пусто-"
 
 

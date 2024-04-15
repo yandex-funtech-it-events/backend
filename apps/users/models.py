@@ -151,8 +151,8 @@ class NotificationMethod(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = "Тип уведомления"
-        verbose_name_plural = "Типы уведомления"
+        verbose_name = "Способ уведомления"
+        verbose_name_plural = "Способы уведомления"
         ordering = ["pk"]
 
 
@@ -245,6 +245,7 @@ class CustomUserSettings(models.Model):
         NotificationTime,
         verbose_name="Время уведомлений",
         related_name="settings",
+        blank=True,
     )
     ev_notification_new = models.BooleanField(
         "Уведомлять о новых событиях",
@@ -254,11 +255,13 @@ class CustomUserSettings(models.Model):
         NotificationEventType,
         verbose_name="Тип события для уведомлений",
         related_name="settings",
+        blank=True,
     )
     ev_notification_method = models.ManyToManyField(
         NotificationMethod,
         verbose_name="Способ уведомления для событий",
         related_name="settings",
+        blank=True,
     )
 
     class Meta:
