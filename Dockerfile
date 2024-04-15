@@ -10,4 +10,12 @@ RUN pip3 install -r /app/requirements.txt --no-cache-dir
 
 COPY . .
 
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0:8000" ]
+RUN mkdir -p /backend_static/static
+
+COPY entrypoint.sh .
+
+RUN chmod 777 /app/entrypoint.sh
+
+ENTRYPOINT ["/app/entrypoint.sh"]
+
+CMD ["echo"]
