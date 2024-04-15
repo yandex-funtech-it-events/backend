@@ -1,3 +1,4 @@
+from djoser.views import UserViewSet
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
@@ -53,7 +54,7 @@ class NotificationMethodViewSet(ReadOnlyModelViewSet):
     permission_classes = (IsOwnerOrAdminOrReadOnly,)
 
 
-class CustomUserViewSet(ModelViewSet):
+class CustomUserViewSet(UserViewSet):
     """
     Представление для получения информации о пользователях.
     """
