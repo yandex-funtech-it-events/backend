@@ -2,14 +2,13 @@ import datetime
 import qrcode
 import os
 
-from rest_framework import serializers
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 from drf_extra_fields.fields import Base64ImageField
+from rest_framework import serializers
 
-from apps.notifications.models import Notification
 from apps.events.models import Events
-
+from apps.notifications.models import Notification
 
 NOTIFICATION_TIME = datetime.time(10, 0)
 

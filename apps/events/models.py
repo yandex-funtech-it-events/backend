@@ -87,22 +87,19 @@ class Events(EventTimeStamp):
 
 class Report(models.Model):
     """Модель докладов мероприятия"""
+
     topic = models.CharField(
         "название доклада",
         max_length=ReportFieldLength.MAX_LENGTH_TOPIC.value,
-        unique=True
+        unique=True,
     )
     short_description = models.TextField(
         "описание долкада",
         max_length=ReportFieldLength.MAX_LENGTH_DESCRIPTION.value,
-        unique=True
+        unique=True,
     )
-    start_at = models.DateTimeField(
-        "дата начала доклада", default=None, db_index=True
-    )
-    end_at = models.DateTimeField(
-        "дата окончания доклада", default=None, db_index=True
-    )
+    start_at = models.DateTimeField("дата начала доклада", default=None, db_index=True)
+    end_at = models.DateTimeField("дата окончания доклада", default=None, db_index=True)
     speaker = models.CharField(
         "Фамилиия и имя спикера",
         max_length=ReportFieldLength.MAX_LENGTH_SPEAKER.value,
@@ -118,7 +115,7 @@ class Report(models.Model):
         Events,
         on_delete=models.CASCADE,
         verbose_name="доклад",
-        related_name="reported_at_event"
+        related_name="reported_at_event",
     )
 
     class Meta:
@@ -146,7 +143,8 @@ class Registration(models.Model):
         related_name="participants",
     )
     created_at = models.DateTimeField(
-        "дата создания", auto_now_add=True,
+        "дата создания",
+        auto_now_add=True,
     )
     registration_stage = models.CharField(
         "стадия регистрации",
@@ -155,9 +153,34 @@ class Registration(models.Model):
         max_length=MAX_LENGTH_REGISTRATION_STAGE,
     )
     created_at = models.DateTimeField(
-        "дата создания", auto_now_add=True,
+        "дата создания",
+        auto_now_add=True,
     )
 
     class Meta:
         verbose_name = "Регистрация"
         verbose_name_plural = "Регистрации"
+
+
+class Favorites(models.Model):
+    """Модель добавления мероприятия в избранное"""
+
+    user = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        verbose_name="участник",
+        related_name="participants_favorite",
+    )
+    event = models.ForeignKey(
+        Events,
+        on_delete=models.CASCADE,
+        verbose_name="мероприятие",
+        related_name="event_favorite",
+    )
+
+    class Meta:
+        verbose_name = "избранное мероприятие"
+        verbose_name_plural = "избранные мероприятия"
+
+    def __str__(self):
+        return f"{self.user} - {self.event}"
