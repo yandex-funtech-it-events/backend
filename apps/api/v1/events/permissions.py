@@ -1,6 +1,7 @@
 from rest_framework import permissions
 
-from apps.events.models import Report
+from apps.events.models import Report, EventTags
+from apps.users.choice_classes import RoleChoices
 
 
 class IsOrganizerOrReadOnly(permissions.BasePermission):
@@ -12,6 +13,8 @@ class IsOrganizerOrReadOnly(permissions.BasePermission):
 
         if isinstance(obj, Report):
             return obj.event.creator == request.user
+        if isinstance(obj, EventTags):
+            return request.user.role == RoleChoices.ORGANIZER
         return obj.creator == request.user
 
 
@@ -21,4 +24,4 @@ class IsModeratorOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return request.user.is_moderator
+        return request.user.role == RoleChoices.MODERATOR
