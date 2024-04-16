@@ -152,7 +152,7 @@ class Registration(models.Model):
         default=choice_classes.RegistrationStageChoices.NOT_REGISTERED,
         max_length=MAX_LENGTH_REGISTRATION_STAGE,
     )
-    
+
     class Meta:
         verbose_name = "Регистрация"
         verbose_name_plural = "Регистрации"

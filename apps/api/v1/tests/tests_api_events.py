@@ -1,18 +1,19 @@
 import datetime
 
-from rest_framework import status
-from rest_framework.test import APITestCase, APIClient
-from rest_framework_simplejwt.tokens import RefreshToken
 from django.utils import timezone
+from rest_framework import status
+from rest_framework.test import APIClient, APITestCase
+from rest_framework_simplejwt.tokens import RefreshToken
 
-from apps.users.models import CustomUser
-from apps.events.models import EventTags, Events, Registration
 from apps.events.choice_classes import FormatChoices
+from apps.events.models import Events, EventTags, Registration
 from apps.users.choice_classes import RoleChoices
+from apps.users.models import CustomUser
 
 
 class EventTagsTestCase(APITestCase):
     """Тесты api для тэгов мероприятия"""
+
     def setUp(self):
         self.simple_user = CustomUser.objects.create(
             username="test_user",
@@ -31,7 +32,7 @@ class EventTagsTestCase(APITestCase):
             email="organizer@mail.ru",
             password="test_organizer_password",
             phone="12345",
-            role=RoleChoices.ORGANIZER
+            role=RoleChoices.ORGANIZER,
         )
         self.organizer_token = RefreshToken.for_user(self.organizer_user)
         self.organizer_client = APIClient()
@@ -48,16 +49,13 @@ class EventTagsTestCase(APITestCase):
 
     # Тест на создание тэга
     def test_event_tags_create(self):
-        response = self.simple_client.post("/api/v1/tags/", {'name': 'new tag'})
+        response = self.simple_client.post("/api/v1/tags/", {"name": "new tag"})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     # Тест на удаление тэга
     def test_event_tags_delete(self):
         response = self.simple_client.delete(f"/api/v1/tags/{self.tag.id}/")
-        self.assertEqual(
-            response.status_code,
-            status.HTTP_403_FORBIDDEN
-        )
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         response = self.organizer_client.delete(f"/api/v1/tags/{self.tag.id}/")
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
@@ -65,6 +63,7 @@ class EventTagsTestCase(APITestCase):
 
 class EventsTestCase(APITestCase):
     """Тесты api для мероприятий"""
+
     def setUp(self):
         self.simple_user = CustomUser.objects.create(
             username="test_user",
@@ -83,7 +82,7 @@ class EventsTestCase(APITestCase):
             email="organizer@mail.ru",
             password="test_organizer_password",
             phone="12345",
-            role=RoleChoices.ORGANIZER
+            role=RoleChoices.ORGANIZER,
         )
         self.organizer_token = RefreshToken.for_user(self.organizer_user)
         self.organizer_client = APIClient()
@@ -119,7 +118,7 @@ class EventsTestCase(APITestCase):
         response = self.simple_client.post(
             "/api/v1/events/",
             {
-                'title': 'new event',
+                "title": "new event",
                 "description": "new description",
                 "format": FormatChoices.ONLINE,
                 "creator": self.organizer_user.id,
@@ -129,29 +128,22 @@ class EventsTestCase(APITestCase):
                 "registration_close": timezone.now(),
                 "date_start": datetime.date.today(),
                 "date_end": datetime.date.today(),
-            }, format="json")
+            },
+            format="json",
+        )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     # Тест на удаление мероприятия
     def test_event_delete(self):
-        response = self.simple_client.delete(
-            f"/api/v1/events/{self.event.id}/"
-        )
-        self.assertEqual(
-            response.status_code,
-            status.HTTP_403_FORBIDDEN
-        )
+        response = self.simple_client.delete(f"/api/v1/events/{self.event.id}/")
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-        response = self.organizer_client.delete(
-            f"/api/v1/events/{self.event.id}/"
-        )
+        response = self.organizer_client.delete(f"/api/v1/events/{self.event.id}/")
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     # Тест на регистрацию на мероприятие
     def test_event_register(self):
-        response = self.simple_client.post(
-            f"/api/v1/events/{self.event.id}/register/"
-        )
+        response = self.simple_client.post(f"/api/v1/events/{self.event.id}/register/")
         if self.event.registration_close > timezone.now():
             self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

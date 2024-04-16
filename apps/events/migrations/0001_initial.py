@@ -290,15 +290,39 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='Favorites',
+            name="Favorites",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='event_favorite', to='events.events', verbose_name='мероприятие')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='participants_favorite', to=settings.AUTH_USER_MODEL, verbose_name='участник')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "event",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="event_favorite",
+                        to="events.events",
+                        verbose_name="мероприятие",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="participants_favorite",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="участник",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'избранное мероприятие',
-                'verbose_name_plural': 'избранные мероприятия',
+                "verbose_name": "избранное мероприятие",
+                "verbose_name_plural": "избранные мероприятия",
             },
         ),
         migrations.AddField(

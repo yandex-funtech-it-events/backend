@@ -4,29 +4,47 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0003_notificationeventtype_notificationmethod_and_more'),
+        ("users", "0003_notificationeventtype_notificationmethod_and_more"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='notificationmethod',
-            options={'ordering': ['pk'], 'verbose_name': 'Способ уведомления', 'verbose_name_plural': 'Способы уведомления'},
+            name="notificationmethod",
+            options={
+                "ordering": ["pk"],
+                "verbose_name": "Способ уведомления",
+                "verbose_name_plural": "Способы уведомления",
+            },
         ),
         migrations.AlterField(
-            model_name='customusersettings',
-            name='ev_notification_method',
-            field=models.ManyToManyField(blank=True, related_name='settings', to='users.notificationmethod', verbose_name='Способ уведомления для событий'),
+            model_name="customusersettings",
+            name="ev_notification_method",
+            field=models.ManyToManyField(
+                blank=True,
+                related_name="settings",
+                to="users.notificationmethod",
+                verbose_name="Способ уведомления для событий",
+            ),
         ),
         migrations.AlterField(
-            model_name='customusersettings',
-            name='ev_notification_start_time',
-            field=models.ManyToManyField(blank=True, related_name='settings', to='users.notificationtime', verbose_name='Время уведомлений'),
+            model_name="customusersettings",
+            name="ev_notification_start_time",
+            field=models.ManyToManyField(
+                blank=True,
+                related_name="settings",
+                to="users.notificationtime",
+                verbose_name="Время уведомлений",
+            ),
         ),
         migrations.AlterField(
-            model_name='customusersettings',
-            name='ev_type_notification',
-            field=models.ManyToManyField(blank=True, related_name='settings', to='users.notificationeventtype', verbose_name='Тип события для уведомлений'),
+            model_name="customusersettings",
+            name="ev_type_notification",
+            field=models.ManyToManyField(
+                blank=True,
+                related_name="settings",
+                to="users.notificationeventtype",
+                verbose_name="Тип события для уведомлений",
+            ),
         ),
     ]
