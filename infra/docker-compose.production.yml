@@ -1,0 +1,40 @@
+name: yandex-funtech-it-meetups
+
+services:
+  it-meetups-db:
+    image: postgres:16.1-alpine
+    container_name: it-meetups-db
+    env_file:
+      - ../.env
+    restart: on-failure
+    volumes:
+      - db_data:/var/lib/postgresql/data/
+
+  backend:
+    image: pisets/meetup_backend:latest
+    container_name: meetup_backend_api
+    env_file:
+      - ../.env
+    volumes:
+      - backend_static:/app/static/
+      - backend_media:/app/media/
+    depends_on:
+      - it-meetups-db
+
+  nginx:
+    image: pisets/meetup_infra
+    container_name: nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - static:/app/static/
+      - backend_static:/backend_static/
+      - backend_media:/backend_media/
+    depends_on:
+      - backend
+
+volumes:
+  db_data:
+  static:
+  backend_static:
+  backend_media:
