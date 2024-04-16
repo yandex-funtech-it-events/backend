@@ -156,6 +156,9 @@ class Registration(models.Model):
     class Meta:
         verbose_name = "Регистрация"
         verbose_name_plural = "Регистрации"
+        constraints = [
+            models.UniqueConstraint(fields=["event", "user"], name="event_user")
+        ]
 
 
 class Favorites(models.Model):
@@ -177,6 +180,9 @@ class Favorites(models.Model):
     class Meta:
         verbose_name = "избранное мероприятие"
         verbose_name_plural = "избранные мероприятия"
+        constraints = [
+            models.UniqueConstraint(fields=["user", "event"], name="user_event")
+        ]
 
     def __str__(self):
         return f"{self.user} - {self.event}"
