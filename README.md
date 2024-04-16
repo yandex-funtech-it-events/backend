@@ -90,11 +90,9 @@
 
 ## Запуск <a id="start"></a>
 
-Запустите контейнеры с проектом из папки infra/:
+Запустите контейнеры с проектом следующей командой:
   ```
     docker compose up -d
-          или
-    docker compose -f docker-compose.production.yml up -d
   ```
 
 Выполните миграции:
