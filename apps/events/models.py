@@ -156,6 +156,9 @@ class Registration(models.Model):
     class Meta:
         verbose_name = "Регистрация"
         verbose_name_plural = "Регистрации"
+        constraints = [
+            models.UniqueConstraint(fields=["event", "user"], name="event_user")
+        ]
 
 
 class Favorites(models.Model):
