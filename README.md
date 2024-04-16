@@ -41,7 +41,7 @@
   - Черепова Александра (TG [@Cherepova_alex](https://t.me/Cherepova_alex))
 
 - Frontend
-  - [Мытников Дмитрий](https://github.com/Dimitry-prog) (TG [@Dmitry_Myt](https://t.me/MariaPavlova111))
+  - [Мытников Дмитрий](https://github.com/Dimitry-prog) (TG [@Dmitry_Myt](https://t.me/Dmitry_Myt))
   - [Боднюк Анастасия](https://github.com/Chill-Peppa) (TG [@chill_peppa](https://t.me/chill_peppa))
 
 - Backend
