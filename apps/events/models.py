@@ -152,11 +152,7 @@ class Registration(models.Model):
         default=choice_classes.RegistrationStageChoices.NOT_REGISTERED,
         max_length=MAX_LENGTH_REGISTRATION_STAGE,
     )
-    created_at = models.DateTimeField(
-        "дата создания",
-        auto_now_add=True,
-    )
-
+    
     class Meta:
         verbose_name = "Регистрация"
         verbose_name_plural = "Регистрации"
