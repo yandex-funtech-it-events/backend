@@ -8,7 +8,8 @@
 4. [Стек технологий](#tools)
 5. [Установка зависимостей](#installation)
 6. [Запуск](#start)
-7. [Frontend](#frontend)
+7. [CI/CD](#cicd)
+8. [Frontend](#frontend)
 
 
 ## О проекте <a id="about"></a>
@@ -89,9 +90,11 @@
 
 ## Запуск <a id="start"></a>
 
-Запустите контейнеры с проектом следующей командой:
+Запустите контейнеры с проектом из папки infra/:
   ```
     docker compose up -d
+          или
+    docker compose -f docker-compose.production.yml up -d
   ```
 
 Выполните миграции:
@@ -110,6 +113,26 @@
 
 Посмотреть документацию:
 [Swagger](http://127.0.0.1:8000/api/v1/schema/swagger/)
+
+## CI/CD
+### Описание и настройка
+
+- при пуше в любую ветку запускаются тесты
+- при мёрдже PR в ветки `develop` или `release/` проект запускается на удалённом сервере
+- при мёрдже PR в ветку `main` проект запускается на удалённом сервере
+
+Для корректной работы CI/CD необходимо создать секретные переменные репозитория
+(Repository secrets):
+```text
+DOCKER_USERNAME=<docker_username>
+DOCKER_PASSWORD=<docker_password>
+
+SERVER_HOST=<server_pub_ip>
+SERVER_USER=<username>
+
+SSH_KEY=<--BEGIN OPENSSH PRIVATE KEY--...--END OPENSSH PRIVATE KEY--> # cat ~/.ssh/id_rsa
+SSH_PASSPHRASE=<ssh key passphrase>
+```
 
 ##  Frontend <a id="frontend"></a>
 
