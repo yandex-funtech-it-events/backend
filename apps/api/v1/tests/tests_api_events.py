@@ -54,7 +54,9 @@ class EventTagsTestCase(APITestCase):
 
     # Тест на создание тэга
     def test_event_tags_create(self):
-        response = self.simple_client.post("/api/v1/tags/", {"name": "new tag"})
+        response = self.simple_client.post(
+            "/api/v1/tags/", {"name": "new tag"}
+        )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     # Тест на удаление тэга
@@ -140,15 +142,21 @@ class EventsTestCase(APITestCase):
 
     # Тест на удаление мероприятия
     def test_event_delete(self):
-        response = self.simple_client.delete(f"/api/v1/events/{self.event.id}/")
+        response = self.simple_client.delete(
+            f"/api/v1/events/{self.event.id}/"
+        )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-        response = self.organizer_client.delete(f"/api/v1/events/{self.event.id}/")
+        response = self.organizer_client.delete(
+            f"/api/v1/events/{self.event.id}/"
+        )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     # Тест на регистрацию на мероприятие
     def test_event_register(self):
-        response = self.simple_client.post(f"/api/v1/events/{self.event.id}/register/")
+        response = self.simple_client.post(
+            f"/api/v1/events/{self.event.id}/register/"
+        )
         if self.event.registration_close > timezone.now():
             self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -217,14 +225,14 @@ class ReportTestCase(APITestCase):
 
     def test_report_create(self):
         data = {
-                'topic': 'new topic',
-                "short_description": "new description",
-                "speaker": "new speaker",
-                "start_at": timezone.now(),
-                "end_at": timezone.now(),
-                "position": "test position",
-                "event": self.event.id,
-            }
+            "topic": "new topic",
+            "short_description": "new description",
+            "speaker": "new speaker",
+            "start_at": timezone.now(),
+            "end_at": timezone.now(),
+            "position": "test position",
+            "event": self.event.id,
+        }
         response = self.simple_client.post(
             f"/api/v1/reports/{self.event.id}/",
             data=data,
