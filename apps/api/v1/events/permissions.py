@@ -1,6 +1,6 @@
 from rest_framework import permissions
 
-from apps.events.models import Report, EventTags
+from apps.events.models import EventTags, Report
 from apps.users.choice_classes import RoleChoices
 
 
