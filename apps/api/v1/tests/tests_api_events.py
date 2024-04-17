@@ -6,7 +6,12 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.utils import timezone
 
 from apps.users.models import CustomUser
-from apps.events.models import EventTags, Events, Registration
+from apps.events.models import (
+    EventTags,
+    Events,
+    Registration,
+    Report
+)
 from apps.events.choice_classes import FormatChoices
 from apps.users.choice_classes import RoleChoices
 
@@ -160,5 +165,89 @@ class EventsTestCase(APITestCase):
     def test_event_unregister(self):
         response = self.simple_client.post(
             f"/api/v1/events/{self.event.id}/unregister/"
+        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+
+class ReportTestCase(APITestCase):
+    """Тесты api для докладов"""
+
+    def setUp(self):
+        self.simple_user = CustomUser.objects.create(
+            username="test_user",
+            email="user@mail.ru",
+            password="test_user_password",
+            phone="1234",
+        )
+        self.simple_user_token = RefreshToken.for_user(self.simple_user)
+        self.simple_client = APIClient()
+        self.simple_client.credentials(
+            HTTP_AUTHORIZATION=f"Bearer {self.simple_user_token.access_token}"
+        )
+
+        self.organizer_user = CustomUser.objects.create(
+            username="test_organizer",
+            email="organizer@mail.ru",
+            password="test_organizer_password",
+            phone="12345",
+            role=RoleChoices.ORGANIZER
+        )
+        self.organizer_token = RefreshToken.for_user(self.organizer_user)
+        self.organizer_client = APIClient()
+        self.organizer_client.credentials(
+            HTTP_AUTHORIZATION=f"Bearer {self.organizer_token.access_token}"
+        )
+
+        self.event = Events.objects.create(
+            title="test_title",
+            description="test_description",
+            format=FormatChoices.ONLINE,
+            creator=self.organizer_user,
+            moderator=self.organizer_user,
+            registration_open=timezone.now(),
+            registration_close=timezone.now(),
+            date_start=datetime.date.today(),
+            date_end=datetime.date.today(),
+        )
+        self.report = Report.objects.create(
+            topic="test_topic",
+            short_description="test_description",
+            speaker="test_speaker",
+            start_at=timezone.now(),
+            end_at=timezone.now(),
+            position="test_position",
+            event=self.event
+        )
+
+    def test_report_list(self):
+        response = self.simple_client.get(f"/api/v1/reports/{self.event.id}/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_report_create(self):
+        data = {
+                'topic': 'new topic',
+                "short_description": "new description",
+                "speaker": "new speaker",
+                "start_at": timezone.now(),
+                "end_at": timezone.now(),
+                "position": "test position",
+                "event": self.event.id,
+            }
+        response = self.simple_client.post(
+            f"/api/v1/reports/{self.event.id}/",
+            data=data,
+            format="json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_report_delete(self):
+
+        response = self.simple_client.delete(
+            f"/api/v1/reports/{self.event.id}/{self.report.id}/",
+        )
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        response = self.organizer_client.delete(
+            f"/api/v1/reports/{self.event.id}/{self.report.id}/",
         )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
