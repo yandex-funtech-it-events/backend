@@ -131,7 +131,7 @@ SERVER_USER=<username>
 SSH_KEY=<--BEGIN OPENSSH PRIVATE KEY--...--END OPENSSH PRIVATE KEY--> # cat ~/.ssh/id_rsa
 SSH_PASSPHRASE=<ssh key passphrase>
 ```
-## Покрытие тестами составляет
+## Покрытие тестами
 ### coverage 84% total
 
 ##  Frontend <a id="frontend"></a>
